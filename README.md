@@ -55,9 +55,155 @@ This is the script itself
   
   ![IndexStyling](https://user-images.githubusercontent.com/77030485/121856599-49425780-ccba-11eb-9cc4-64cf7e0cf196.PNG)
   
-  Here is a list of features along with the code that completed them.
+  Here is a list of features the index page has. 
+  
+  -Depending on whether or not the rental is damaged the code will display a red X or a green checkmark *by virtue of Font Awesome*
+  
+  -If the desc. text overflows an ellipses appears
+  
+  -an ellipses drop down shows up upon hovering on a row
+  
+___
+## Fourth Story | Sorting logic
+
+  After completing the the styling of the index page I now had to implement the logic for sorting. This was pretty straight forward.. or so I thought. The challenging aspect of this story was the fact that the page was not suppose to reload upon resorting. So I decided to use AJAX to accomplish this. 
+  
+  ![IndexSort](https://user-images.githubusercontent.com/77030485/121978925-d59e5a00-cd4e-11eb-9d9e-af97474c7180.PNG)
+  
+  ### Here's how it works
+  
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" onclick="sortFun('default'); changeNXS();">No Extra Sorting</a>
+          <a class="dropdown-item" onclick="sortFun('damage_rentals'); changeDR();">List Damaged Rentals</a>
+          <a class="dropdown-item" onclick="sortFun('damage_rentals_desc'); changeUR();" >List Undamaged Rentals</a>
+          <a class="dropdown-item" onclick="sortFun('alpha_rentals'); changeA();" >List Alphabetical</a>
+          <a class="dropdown-item" onclick="sortFun('alpha_rentals_desc'); changeRA();">List Reverse Alphabetical</a>
+        </div>
+  The drop down list is link to an ajax function sortFun() and another function that changes the button title. 
+  Let's take a look at how the AJAX function works.
+  
+    function sortFun(sortOrder) {
+      console.log("This hit");
+      $.ajax({
+        type: "POST",
+        url: "@Url.Action("PartialTable")",
+        data: {sortOrder : sortOrder},
+        success: function (data) {
+          document.getElementById("checkBody").innerHTML = data;
+        }
+      });
+      console.log(sortOrder);
+    }
+  This is the funciton itself. It works by taking a string parameter called sortOrder then posting the argument to the controller name PartialTable. Then from this action method the sortOrder var is ran through an if else block to find its match. 
+  
+  public PartialViewResult PartialTable(string sortOrder)
+        {
+            var rentalHistories = from s in db.RentalHistories
+                                  select s;
+            if (sortOrder == "default")
+            {
+
+            }
+            else if (sortOrder == "damage_rentals")
+            {
+                rentalHistories = rentalHistories.OrderByDescending(s => s.RentalDamaged);
+            }
+            else if (sortOrder == "damage_rentals_desc")
+            {
+                rentalHistories = rentalHistories.OrderBy(s => s.RentalDamaged);
+            }
+            else if (sortOrder == "alpha_rentals")
+            {
+                rentalHistories = rentalHistories.OrderBy(s => s.Rental);
+            }
+            else if (sortOrder == "alpha_rentals_desc")
+            {
+                rentalHistories = rentalHistories.OrderByDescending(s => s.Rental);
+            }
+            return PartialView("_IndexTable", rentalHistories);
+        }
+  After reordering the data using LINQ. This function returns the partial view name _IndexTable and a object model rentalHistories.  
+  
+      @foreach (var item in Model)
+    {
+      <tr id="Rental_History-Index--hover-row">
+        <td id="Rental_History-Index--BoolIcon">
+          @if (item.RentalDamaged == true)
+          {
+            <i id="Rental_History-Index--crossmarkclass" class="fas fa-times-circle"></i>
+          }
+          else
+          {
+            <i id="Rental_History-Index--checkmarkclass" class="fa fa-check-circle" aria-hidden="true"></i>
+          }
+        </td>
+        <td style="border-top: solid black 2px; width: 200px;">
+          <button type="button" class="btn btn-dark">@Html.DisplayFor(modelItem => item.Rental)</button>
+        </td>
+        <td id="Rental_History-Index--TextOverFlow">
+          @Html.DisplayFor(modelItem => item.DamagesIncurred)
+        </td>
+        <td id="Rental_Style-Index--bordertopWidth">
+          <div class="dropdown mydropdowncss">
+            <button class="btn btn-dark" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li> <a class="dropdown-item" href="@Url.Action("Edit", new { id = item.Id })"><i style="padding-right: 5px;" class="fa fa-edit" aria-hidden="true"></i>Edit </a></li>
+              <li> <a class="dropdown-item" href="@Url.Action("Details", new { id = item.Id })"> <i style="padding-right: 5px;" class="fa fa-info" aria-hidden="true"></i>Details </a></li>
+              <li><div class="dropdown-divider"></div></li>
+              <li> <a class="dropdown-item" href="@Url.Action("Delete", new { id = item.Id })"><span style="color: red;"><i style="padding-right: 5px;" class="fa fa-trash" aria-hidden="true"></i>Delete</span> </a></li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    }
+  *Above is the partial view code*
+  After the action method is done doing its work the AJAX script runs the success function.
+  
+    success: function (data) {
+          document.getElementById("checkBody").innerHTML = data;
+        }
+  This function takes in a parameter named "data" which has access to the reordered model and the partial view name. It then replaces the default partial view.
+  
+    <tbody id="checkBody">
+    @Html.Partial("_IndexTable")
+    </tbody>
+    
+  With the new one.  
+  
+    document.getElementById("checkBody").innerHTML = data;
+    
+  ___
+  ## Wrap up on what I learned
+  
+  This project was so much and a real challenge. These are skill I engaged. 
+  
+  Solidify my understanding of git verbs like 
+  commit 
+    A snapshot of the current state of the code in ones local repo
+  Push 
+    Takes all of the code and uploads it to the ones remote repo
+  Clone/pull
+    cloning is when you copy the remote repo and pulling is when you get the changes from the remote repo after cloning. 
+  Pull request
+    A request made to merge your changes into the main remote repo
+  
   
 
-  
-  Once this was done I then moved on to implemented the logic  
- 
+Familiarize myself with agile and SCRUM methodologies
+
+participated in daily stand up, and weekly sprint retrospectives and planning
+
+used Bootstrap to make responsive designs that work on many different view ports.
+
+used Javascript to automate tasks.
+
+used Ajax to render pages asynchronously.
+
+Created entity models by using entity framework.
+
+Scaffolded CRUD pages
+
+Used MVC design pattern to render pages dynamically.
+___
