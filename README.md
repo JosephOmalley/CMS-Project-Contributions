@@ -1,5 +1,5 @@
 # CSharpLiveProject
-This repository is dedicated solely to highlighting the contributions I made to the live project I did with my Code Bootcamp. In this live project me and my fellow students worked on a CMS (Content Managment System) for local theather in Portland. The CMS itself was made with ASP .Net MVC and Entity Framework. It's also meant to help manage login capability for subscribers, and log past performances and performers. The next section of this readme document will talk about my specific contributions and the skills I sharpened along the way.
+This repository is dedicated solely to highlighting the contributions I made to project I did with my Code Bootcamp. During this time I worked on a CMS (Content Managment System) for local theather in Portland under by code bootcamp's sister company [Prosper IT Consulting](https://www.learncodinganywhere.com/ProsperITConsulting). The CMS itself was made with ASP .Net MVC and Entity Framework. This readme document will talk about my specific contributions.
 ___
 
   My first story I automated the process of counting the number of contributing devs to theater CMS with pure JS. I did this by counting the p tag, because it was only being used for names. So I wrote a small piece of script that stores the amount of p tags on the document in a varible and places the value next to the H2 tag.  
@@ -7,7 +7,7 @@ ___
 This is the script itself
 
     function countName() {
-        var count = document.getElementsByTagName("p").length; 
+        let count = document.getElementsByTagName("p").length; 
         document.getElementById("Display").innerHTML = count;
       }
       countName();
@@ -38,10 +38,10 @@ This is the script itself
   
   ### This was my solution
   
-    var Counter = 0;
+    let Counter = 0;
     function checkLink() {
       Counter += 1;
-      if (Counter % 2 == 0) {
+      if (Counter % 2 === 0) {
         document.getElementById("Switch").innerHTML = "Notes"
       }
       else {
@@ -98,25 +98,25 @@ ___
   
   public PartialViewResult PartialTable(string sortOrder)
         {
-            var rentalHistories = from s in db.RentalHistories
+            let rentalHistories = from s in db.RentalHistories
                                   select s;
-            if (sortOrder == "default")
+            if (sortOrder === "default")
             {
 
             }
-            else if (sortOrder == "damage_rentals")
+            else if (sortOrder === "damage_rentals")
             {
                 rentalHistories = rentalHistories.OrderByDescending(s => s.RentalDamaged);
             }
-            else if (sortOrder == "damage_rentals_desc")
+            else if (sortOrder === "damage_rentals_desc")
             {
                 rentalHistories = rentalHistories.OrderBy(s => s.RentalDamaged);
             }
-            else if (sortOrder == "alpha_rentals")
+            else if (sortOrder === "alpha_rentals")
             {
                 rentalHistories = rentalHistories.OrderBy(s => s.Rental);
             }
-            else if (sortOrder == "alpha_rentals_desc")
+            else if (sortOrder === "alpha_rentals_desc")
             {
                 rentalHistories = rentalHistories.OrderByDescending(s => s.Rental);
             }
