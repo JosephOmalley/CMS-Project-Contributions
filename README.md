@@ -28,7 +28,7 @@ This is the script itself
     
   From this model and the pre-existing DB context I scaffolded the corresponding CRUD pages.  
   ___
-  ##Second Story | Style create and edit pages
+  ## Second Story | Style create and edit pages
     Now it was time to add some styling to the create and edit pages based of a provided image. 
   I turned create and edit pages into a replica of the images with bootstrap and this is how it turned out.
     
