@@ -179,14 +179,14 @@ ___
   
   This project was a real challenge, and a big stepping stone to me becoming the developer I am today. 
   
-  Solidify my understanding of git verbs like 
-  commit 
+  Solidify my understanding of git verbs like:  <br>
+  ### commit   <br>
     A snapshot of the current state of the code in ones local repo
-  Push 
+  ### Push   <br>
     Takes all of the code and uploads it to the ones remote repo
-  Clone/pull
+  ### Clone/pull   <br>
     cloning is when you copy the remote repo and pulling is when you get the changes from the remote repo after cloning. 
-  Pull request
+  ### Pull request  <br>
     A request made to merge your changes into the main remote repo
   
   
