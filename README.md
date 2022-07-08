@@ -177,7 +177,7 @@ ___
   ___
   ## Wrap up on what I learned
   
-  This project was so much and a real challenge. These are skill I engaged. 
+  This project was a real challenge, and a big stepping stone to me becoming the developer I am today. 
   
   Solidify my understanding of git verbs like 
   commit 
